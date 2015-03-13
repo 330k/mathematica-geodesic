@@ -1,0 +1,527 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     18267,        518]
+NotebookOptionsPosition[     17449,        486]
+NotebookOutlinePosition[     17794,        501]
+CellTagsIndexPosition[     17751,        498]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"<<", "Geodesic`"}]], "Input",
+ CellChangeTimes->{{3.6115695157151937`*^9, 3.611569517557622*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"SetOptions", "[", 
+   RowBox[{"GeoDistance2", ",", 
+    RowBox[{"WorkingPrecision", "\[Rule]", "$MachinePrecision"}]}], "]"}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SetOptions", "[", 
+   RowBox[{"GeoDirection2", ",", 
+    RowBox[{"WorkingPrecision", "\[Rule]", "$MachinePrecision"}]}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.612171756893673*^9, 3.612171808178752*^9}, {
+  3.6121718472356863`*^9, 3.612171848710636*^9}, {3.61217510228967*^9, 
+  3.6121751107039757`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{"format", "[", "num_", "]"}], ":=", 
+   RowBox[{"NumberForm", "[", 
+    RowBox[{"num", ",", 
+     RowBox[{"{", 
+      RowBox[{"16", ",", "6"}], "}"}], ",", 
+     RowBox[{"ExponentFunction", "\[Rule]", 
+      RowBox[{"(", 
+       RowBox[{"Null", "&"}], ")"}]}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"SetAttributes", "[", 
+   RowBox[{"format", ",", "Listable"}], "]"}], ";"}]}], "Input",
+ CellChangeTimes->{{3.6121719199236107`*^9, 3.612171954400834*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"With", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"p1", "=", 
+      RowBox[{"{", 
+       RowBox[{"30", ",", "0"}], "}"}]}], ",", 
+     RowBox[{"p2", "=", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "30"}], ",", "180"}], "}"}]}]}], "}"}], ",", 
+   RowBox[{"TableForm", "@", 
+    RowBox[{"format", "[", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistanceGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirectionGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+      "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.611570818018306*^9, 3.6115708987248163`*^9}, {
+   3.611571240971229*^9, 3.611571248945344*^9}, 3.611652781090955*^9, {
+   3.611661075503166*^9, 3.6116611084605722`*^9}, {3.6120673730770903`*^9, 
+   3.612067376148139*^9}, {3.612082319796658*^9, 3.6120823199384623`*^9}, {
+   3.6120824697961617`*^9, 3.6120824729278193`*^9}, {3.612164077927595*^9, 
+   3.612164078049677*^9}, {3.612169920554768*^9, 3.612169923723754*^9}, {
+   3.612170353576174*^9, 3.612170353735395*^9}, {3.6121705854299088`*^9, 
+   3.612170655830521*^9}, {3.612170716183317*^9, 3.612170793798469*^9}, {
+   3.612171742225362*^9, 3.61217175441903*^9}, {3.6121718548306637`*^9, 
+   3.6121718639217052`*^9}, {3.61217196364753*^9, 3.612171967992035*^9}}],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TagBox[
+      InterpretationBox["\<\"19928486.691077\"\>",
+       1.9928486691077065`*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"269.869911\"\>",
+       269.86991137693457`,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"20003931.458461\"\>",
+       2.0003931458460953`*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"0.000000\"\>",
+       0,
+       Editable->False],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"20003931.458461\"\>",
+       2.0003931458460953`*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"0.000000\"\>",
+       0.,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]}
+   },
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[2.0999999999999996`]}, 
+       Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}, "RowsIndexed" -> {}}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.612172575724002*^9, 3.612172619438889*^9, 3.61217394789281*^9, {
+   3.612174094223328*^9, 3.612174121369811*^9}, 3.612174192939124*^9, 
+   3.612174594285989*^9, {3.612174665980214*^9, 3.612174681315002*^9}, {
+   3.6121747210426817`*^9, 3.61217474541194*^9}, 3.612174780917447*^9, 
+   3.612174881849636*^9, {3.612174943283929*^9, 3.612174963280002*^9}, 
+   3.612175031773518*^9, {3.612175086963978*^9, 3.612175111944109*^9}, {
+   3.612175646657535*^9, 3.612175658997231*^9}, 3.612178066930578*^9, 
+   3.612178134774996*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"With", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"p1", "=", 
+      RowBox[{"{", 
+       RowBox[{"0.4", ",", "0"}], "}"}]}], ",", 
+     RowBox[{"p2", "=", 
+      RowBox[{"{", 
+       RowBox[{"0.4", ",", "180"}], "}"}]}]}], "}"}], ",", 
+   RowBox[{"TableForm", "@", 
+    RowBox[{"format", "[", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistanceGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirectionGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+      "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.6121706708378*^9, 3.612170680911542*^9}, 
+   3.612170803188383*^9, {3.6121708405018578`*^9, 3.612170885782856*^9}, 
+   3.6121718708463783`*^9, 3.6121720642700663`*^9}],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TagBox[
+      InterpretationBox["\<\"19915473.023374\"\>",
+       1.9915473023373652`*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"360.000000\"\>",
+       359.9999999999995,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"19915472.023376\"\>",
+       1.9915472023375638`*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"0.000000\"\>",
+       0,
+       Editable->False],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"19915472.023376\"\>",
+       1.991547202337564*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"0.000000\"\>",
+       0.,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]}
+   },
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[2.0999999999999996`]}, 
+       Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}, "RowsIndexed" -> {}}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.612170681548273*^9, 3.6121708040387983`*^9, {3.6121708407176867`*^9, 
+   3.612170885951035*^9}, 3.6121716660600243`*^9, {3.612171794303384*^9, 
+   3.6121718120242157`*^9}, 3.612171871070745*^9, 3.612172064749992*^9, 
+   3.6121725915189447`*^9, 3.6121726249909782`*^9, 3.612173992016168*^9, 
+   3.61217419437475*^9, 3.612174746773691*^9, 3.612174781738093*^9, 
+   3.6121749027208643`*^9, {3.612174944966762*^9, 3.6121749640291357`*^9}, 
+   3.6121750324082403`*^9, {3.612175087634905*^9, 3.612175112509503*^9}, {
+   3.612175647571464*^9, 3.612175660803919*^9}, 3.6121780675597057`*^9, 
+   3.612178133064747*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"With", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"p1", "=", 
+      RowBox[{"{", 
+       RowBox[{"0", ",", "0"}], "}"}]}], ",", 
+     RowBox[{"p2", "=", 
+      RowBox[{"{", 
+       RowBox[{"0.5", ",", "179.5"}], "}"}]}]}], "}"}], ",", 
+   RowBox[{"TableForm", "@", 
+    RowBox[{"format", "[", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistanceGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirectionGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+      "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.612170694119169*^9, 3.612170699223043*^9}, 
+   3.612170807105262*^9, 3.612171881375494*^9, 3.612172070045529*^9}],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TagBox[
+      InterpretationBox["\<\"19936426.545907\"\>",
+       1.993642654590745*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"30.348376\"\>",
+       30.348375686374094`,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"19936288.578833\"\>",
+       1.993628857883331*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"25.671873\"\>",
+       25.671872805212686`,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"19936288.578833\"\>",
+       1.993628857883331*^7,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"25.671873\"\>",
+       25.671872805211784`,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]}
+   },
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[2.0999999999999996`]}, 
+       Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}, "RowsIndexed" -> {}}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{
+  3.612175033009027*^9, {3.612175088198004*^9, 3.6121751138951283`*^9}, 
+   3.6121756484040422`*^9, 3.612178068323185*^9, 3.612178131486661*^9}]
+}, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"RandomGeoPosition", "[", "]"}], ":=", "\[IndentingNewLine]", 
+  RowBox[{"{", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"ArcSin", "[", 
+      RowBox[{"RandomReal", "[", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"-", "1"}], ",", "1"}], "}"}], "]"}], "]"}], "/", "Degree"}],
+     ",", 
+    RowBox[{"RandomReal", "[", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"-", "180."}], ",", "180."}], "}"}], "]"}]}], "}"}]}]], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"With", "[", 
+  RowBox[{
+   RowBox[{"{", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"p1", "=", 
+      RowBox[{"RandomGeoPosition", "[", "]"}]}], ",", "\[IndentingNewLine]", 
+     RowBox[{"p2", "=", 
+      RowBox[{"RandomGeoPosition", "[", "]"}]}]}], "\[IndentingNewLine]", 
+    "}"}], ",", "\[IndentingNewLine]", 
+   RowBox[{"TableForm", "@", 
+    RowBox[{"format", "[", 
+     RowBox[{"{", "\[IndentingNewLine]", 
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistance2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirection2", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}], ",", 
+       "\[IndentingNewLine]", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"GeoDistanceGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}], ",", 
+         RowBox[{"GeoDirectionGL", "[", 
+          RowBox[{"p1", ",", "p2"}], "]"}]}], "}"}]}], "\[IndentingNewLine]", 
+      "}"}], "]"}]}]}], "\[IndentingNewLine]", "]"}]], "Input",
+ CellChangeTimes->{{3.611661501984665*^9, 3.611661536451805*^9}, {
+   3.61206741454559*^9, 3.6120674493252563`*^9}, 3.6120809663025103`*^9, {
+   3.612171683281588*^9, 3.6121716894399843`*^9}, 3.612172073421343*^9}],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {
+     TagBox[
+      InterpretationBox["\<\"598826.453866\"\>",
+       598826.4538656338,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"4.968616\"\>",
+       4.968616459886241,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"598826.453866\"\>",
+       598826.4538658392,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"4.968616\"\>",
+       4.968616459881836,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]},
+    {
+     TagBox[
+      InterpretationBox["\<\"598826.453866\"\>",
+       598826.4538658392,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ], 
+     TagBox[
+      InterpretationBox["\<\"4.968616\"\>",
+       4.968616459881807,
+       AutoDelete->True],
+      NumberForm[#, {16, 6}, ExponentFunction -> (Null& )]& ]}
+   },
+   GridBoxAlignment->{
+    "Columns" -> {{Left}}, "ColumnsIndexed" -> {}, "Rows" -> {{Baseline}}, 
+     "RowsIndexed" -> {}},
+   GridBoxSpacings->{"Columns" -> {
+       Offset[0.27999999999999997`], {
+        Offset[2.0999999999999996`]}, 
+       Offset[0.27999999999999997`]}, "ColumnsIndexed" -> {}, "Rows" -> {
+       Offset[0.2], {
+        Offset[0.4]}, 
+       Offset[0.2]}, "RowsIndexed" -> {}}],
+  Function[BoxForm`e$, 
+   TableForm[BoxForm`e$]]]], "Output",
+ CellChangeTimes->{{3.6116615367938213`*^9, 3.611661559814095*^9}, 
+   3.612067362844524*^9, {3.612067417653337*^9, 3.612067458065002*^9}, {
+   3.6120809533037033`*^9, 3.612080978495797*^9}, 3.612081033166662*^9, {
+   3.612081193805855*^9, 3.612081198569982*^9}, 3.612081316854007*^9, {
+   3.61208248420269*^9, 3.612082504196666*^9}, {3.612106372381671*^9, 
+   3.612106374413423*^9}, {3.612159841543168*^9, 3.612159851468272*^9}, {
+   3.612160018952764*^9, 3.6121600319129333`*^9}, {3.612160077459938*^9, 
+   3.6121601033496523`*^9}, 3.612160276494679*^9, 3.612163673854447*^9, {
+   3.61216381346634*^9, 3.612163846510592*^9}, 3.6121640232249737`*^9, 
+   3.612164180244255*^9, 3.6121694348345346`*^9, {3.6121695073853893`*^9, 
+   3.612169520045125*^9}, {3.612169550201219*^9, 3.612169566204159*^9}, 
+   3.612170056958912*^9, {3.612170400224379*^9, 3.6121704191193247`*^9}, 
+   3.612170513445642*^9, 3.612170812773445*^9, {3.612171669085412*^9, 
+   3.612171721215109*^9}, 3.612172073948847*^9, 3.6121750364637613`*^9, {
+   3.61217508986159*^9, 3.6121751179191236`*^9}, {3.612175649944829*^9, 
+   3.612175654995076*^9}, {3.612178071330276*^9, 3.612178095916387*^9}, 
+   3.612178128471483*^9}]
+}, Open  ]]
+},
+WindowSize->{740, 731},
+WindowMargins->{{-7, Automatic}, {Automatic, 0}},
+FrontEndVersion->"8.0 for Linux x86 (64-bit) (2011\:5e7410\:670813\:65e5)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[557, 20, 121, 2, 30, "Input"],
+Cell[681, 24, 533, 13, 50, "Input"],
+Cell[1217, 39, 528, 15, 50, "Input"],
+Cell[CellGroupData[{
+Cell[1770, 58, 1975, 46, 126, "Input"],
+Cell[3748, 106, 2113, 56, 73, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5898, 167, 1405, 38, 126, "Input"],
+Cell[7306, 207, 2196, 57, 73, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9539, 269, 1351, 37, 126, "Input"],
+Cell[10893, 308, 1762, 50, 73, "Output"]
+}, Open  ]],
+Cell[12670, 361, 474, 15, 50, "Input"],
+Cell[CellGroupData[{
+Cell[13169, 380, 1497, 37, 202, "Input"],
+Cell[14669, 419, 2764, 64, 73, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
