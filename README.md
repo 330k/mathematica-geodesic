@@ -1,8 +1,5 @@
-# mathematica-geodesic
-Geodesic calculation library implemented by Mathematica
-
 # Summary
- This package provides substitute functions for `GeoDestination`, `GeoDistance` and `GeoDirection`, which are built-in functions of _Methematica_. This package can solve geodesic problems more accurately with arbitrary precision calculation by designating option `WorkingPrecision`. This package also contains interface to GeographicLib via J/Link.
+ This package provides substitute functions for `GeoDestination`, `GeoDistance` and `GeoDirection`, which are built-in functions of _Methematica_. This package can solve geodesic problems more accurately with arbitrary precision calculation by designating option `WorkingPrecision`. This package also contains interface to GeographicLib via _J/Link_.
 
  Although this package and [GeographicLib](http://geographiclib.sourceforge.net/) refer to the same paper by Charles F.F.Karney, they differ in the way to calculate. GeographicLib uses functional expansion to calculate elliptic integrals, but this package uses _Mathematica_ built-in functions such as `EllipticE`. Additionally, inverse function of elliptic integral is represented by `InverseFunction`, and `FindRoot` is used to solve the inverse problems. This enables arbitrary precision calculation with _Mathematica_.
 
@@ -15,9 +12,10 @@ Geodesic calculation library implemented by Mathematica
 + move "Geodesic" directory to the directory _Mathematica_ can find such as `$UserBaseDirectory` or another one of `$Path`.
 
 # Usage
- In your _Mathematica_ session
+ In your _Mathematica_ session,
 + evaluate `<<Geodesic`` to load this package,
-+ use like built-in function e.g. `GeoDistance2[{lat1, lon1}, {lat2, lon2}]`.
++ use like built-in function e.g. `GeoDistance2[{lat1, lon1}, {lat2, lon2}]`,
++ or to use GeographicLib, write `GeoDistanceGL[{lat1, lon1}, {lat2, lon2}]`.
 
 # License
  This software is released under the MIT License.
