@@ -13,7 +13,7 @@
 
 # Usage
  In your _Mathematica_ session,
-+ evaluate `<<Geodesic`` to load this package,
++ evaluate ``<<Geodesic` `` to load this package,
 + use like built-in function e.g. `GeoDistance2[{lat1, lon1}, {lat2, lon2}]`,
 + or to use GeographicLib, write `GeoDistanceGL[{lat1, lon1}, {lat2, lon2}]`.
 
