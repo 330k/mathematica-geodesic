@@ -75,7 +75,7 @@ StyleBox[\"1\", \"TR\"]]\)},{\!\(\*SubscriptBox[
 StyleBox[\"lat\", \"TI\"], 
 StyleBox[\"2\", \"TR\"]]\),\!\(\*SubscriptBox[
 StyleBox[\"long\", \"TI\"], 
-StyleBox[\"2\", \"TR\"]]\)}] returns geodetic distance between 2 points.";
+StyleBox[\"2\", \"TR\"]]\)}] returns geodetic distance between 2 points.\nOptions are equal to FindRoot.";
 
 
 GeoDirection2::usage="GeoDirection2[{\!\(\*SubscriptBox[
@@ -86,7 +86,7 @@ StyleBox[\"1\", \"TR\"]]\)},{\!\(\*SubscriptBox[
 StyleBox[\"lat\", \"TI\"], 
 StyleBox[\"2\", \"TR\"]]\),\!\(\*SubscriptBox[
 StyleBox[\"long\", \"TI\"], 
-StyleBox[\"2\", \"TR\"]]\)}] returns direction from 1st point to 2nd point.";
+StyleBox[\"2\", \"TR\"]]\)}] returns direction from 1st point to 2nd point.\nOptions are equal to FindRoot.";
 
 
 Begin["`Private`"];
@@ -143,8 +143,8 @@ geoInverse[{lat1_,lon1_},{lat2_,lon2_},datum_,opts:OptionsPattern[]]:=Catch[Modu
 	s1,s2,s12
 },
 	{a,b,f}=SetPrecision[ellipsoidParameters[datum],OptionValue[WorkingPrecision]];
-	e2=f(2-f);
-	eprime2=e2/(1-e2);
+	e2=SetPrecision[f(2-f),OptionValue[WorkingPrecision]];
+	eprime2=SetPrecision[e2/(1-e2),OptionValue[WorkingPrecision]];
 
 	\[Phi]1=SetPrecision[lat1 Degree,OptionValue[WorkingPrecision]];
 	\[Phi]2=SetPrecision[lat2 Degree,OptionValue[WorkingPrecision]];
@@ -169,68 +169,92 @@ geoInverse[{lat1_,lon1_},{lat2_,lon2_},datum_,opts:OptionsPattern[]]:=Catch[Modu
 	\[Beta]1=ArcTan[(1-f)Tan[\[Phi]1]];
 	\[Beta]2=ArcTan[(1-f)Tan[\[Phi]2]];
 
-	Which[
-		TrueQ[\[Beta]1==\[Beta]2==0],
-		(* equator *)
-		If[TrueQ[\[Lambda]12org>0],
-			\[Alpha]1=Pi/2
-			,
-			\[Alpha]1=-Pi/2
-		];
-		,
-		TrueQ[\[Lambda]12org==-Pi],
-		(* meridian *)
-		\[Alpha]1=Pi;
-		,
-		True,
+	{s12,\[Alpha]1,\[Alpha]2}=Catch[
 		Which[
-			TrueQ[Abs[Abs[\[Beta]1]-Abs[\[Beta]2]]<1.0Degree&&Abs[\[Lambda]12org]>179.0Degree],
+			TrueQ[\[Beta]1==\[Beta]2==0&&Abs[\[Lambda]12org]<(1-f)*180*Degree],
+			(* equator *)
+			(*\[Alpha]1=Pi/2;
+			\[Alpha]2=Pi/2;
+			s12=a Abs[\[Lambda]12org];Print[FullForm@s12];*)
+			Throw[{a*Abs[\[Lambda]12org],Pi/2,Pi/2}];
+			,
+			TrueQ[\[Beta]1==-Pi/2||\[Lambda]12org==-Pi],
+			(* meridian *)
+			\[Alpha]1=Pi;
+			\[Alpha]2=0;
+			\[Sigma]1=ArcTan[Cos[\[Alpha]1]Cos[\[Beta]1],Sin[\[Beta]1]];
+			\[Sigma]2=ArcTan[Cos[\[Alpha]2]Cos[\[Beta]2],Sin[\[Beta]2]];
+			k2=eprime2;
+			s1=b Re[EllipticE[\[Sigma]1,-k2]];
+			s2=b Re[EllipticE[\[Sigma]2,-k2]];
+			s12=s2-s1;
+			Throw[{s2-s1,Pi,0}];
+		];
+		Which[
+			TrueQ[Abs[\[Beta]1-\[Beta]2(*Abs[\[Beta]1]-Abs[\[Beta]2]*)]<f*Degree&&Abs[\[Lambda]12org]>(1-f)*180*Degree],
 			(* nearly antipodal *)
 			Module[{\[CapitalDelta],x,y,\[Mu]},
 				\[CapitalDelta]=f a Pi Cos[\[Beta]1]^2;
 				x=(\[Lambda]12org-Pi)a Cos[\[Beta]1]/\[CapitalDelta];
 				y=(\[Beta]1+\[Beta]2)a/\[CapitalDelta];
 				If[TrueQ[y!=0],
-					\[Mu]=\[Mu]/.NSolve[\[Mu]^4+2\[Mu]^3+(1-x^2-y^2)\[Mu]^2-2y^2\[Mu]-y^2==0&&\[Mu]>0,\[Mu]];
-					If[Length[\[Mu]]>=1,
-						\[Mu]=First[\[Mu]];
-						\[Alpha]10=ArcTan[y/\[Mu],-x/(1+\[Mu])];
-						,
-						\[Alpha]10=ArcTan[Max[0,Sqrt[1-x^2]],-x];
+					Module[{\[Mu]ans},
+						\[Mu]ans=NSolve[\[Mu]^4+2\[Mu]^3+(1-x^2-y^2)\[Mu]^2-2y^2\[Mu]-y^2==0&&0<=\[Mu],\[Mu]];
+						If[Length[\[Mu]ans]>=1,
+							\[Mu]=First[\[Mu]/.\[Mu]ans];
+							\[Alpha]10=ArcTan[y/\[Mu],-x/(1+\[Mu])];
+							,
+							\[Alpha]10=ArcTan[Sqrt[Max[0,1-x^2]],-x];
+						];
 					];
+					(*Print[{Abs[\[Beta]1-\[Beta]2],x,y,\[Mu],\[Alpha]10}];*)
 					,
-					\[Alpha]10=ArcTan[Max[0,Sqrt[1-x^2]],-x];
+					\[Alpha]10=ArcTan[Sqrt[Max[0,1-x^2]],-x];
 				]
-				(*Print[{x,y,\[Mu],\[Alpha]10}];*)
 			];
 			,
 			True,
 			(* else *)
 			\[Omega]12=\[Lambda]12org/Sqrt[1-e2 ((Cos[\[Beta]1]+Cos[\[Beta]2])/2)^2];
 			\[Alpha]10=ArcTan[Cos[\[Beta]1]Sin[\[Beta]2]-Sin[\[Beta]1]Cos[\[Beta]2]Cos[\[Omega]12],Cos[\[Beta]2]Sin[\[Omega]12]];
+			(*Print[{\[Omega]12,\[Alpha]10,ArcTan[Cos[\[Beta]1]Sin[\[Beta]2]-Sin[\[Beta]1]Cos[\[Beta]2]Cos[\[Omega]12],Cos[\[Beta]2]Sin[\[Omega]12]]}];*)
 		];
 
 		(* Solve \[Alpha]1 *)
-		\[Lambda]12=(-1+f) Cos[\[Beta]1] (G[ArcTan[Cos[\[Alpha]1] Cos[\[Beta]1],Sin[\[Beta]1]],1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-G[ArcTan[Sqrt[Cos[\[Beta]2]^2-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2],Sin[\[Beta]2]],1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]) Sin[\[Alpha]1];
-		(*\[Lambda]12=-(-1+f) Cos[\[Beta]1] (eprime2 EllipticF[ArcTan[Cos[\[Alpha]1] Cos[\[Beta]1],Sin[\[Beta]1]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-eprime2 EllipticF[ArcTan[Sqrt[Cos[\[Beta]2]^2-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2],Sin[\[Beta]2]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-(1+eprime2) (EllipticPi[1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,ArcTan[Cos[\[Alpha]1] Cos[\[Beta]1],Sin[\[Beta]1]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-EllipticPi[1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,ArcTan[Sqrt[Cos[\[Beta]2]^2-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2],Sin[\[Beta]2]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)])) Sin[\[Alpha]1];*)
-		(*Print[Plot[Evaluate@{\[Lambda]12,\[Lambda]12org},{\[Alpha]1,-Pi,Pi}]];(* dubug *)
-		Print[\[Alpha]10];*)
-		\[Alpha]1=\[Alpha]1/.First@FindRoot[
+		(*\[Lambda]12=(-1+f) Cos[\[Beta]1] (G[ArcTan[Cos[\[Alpha]1] Cos[\[Beta]1],Sin[\[Beta]1]],1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-G[ArcTan[Sqrt[Cos[\[Beta]2]^2-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2],Sin[\[Beta]2]],1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]) Sin[\[Alpha]1];*)
+		\[Lambda]12=-(-1+f) Cos[\[Beta]1] (eprime2 EllipticF[ArcTan[Cos[\[Alpha]1] Cos[\[Beta]1],Sin[\[Beta]1]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-eprime2 EllipticF[ArcTan[Sqrt[Cos[\[Beta]2]^2-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2],Sin[\[Beta]2]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-(1+eprime2) (EllipticPi[1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,ArcTan[Cos[\[Alpha]1] Cos[\[Beta]1],Sin[\[Beta]1]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)]-EllipticPi[1-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2,ArcTan[Sqrt[Cos[\[Beta]2]^2-Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2],Sin[\[Beta]2]],eprime2 (-1+Cos[\[Beta]1]^2 Sin[\[Alpha]1]^2)])) Sin[\[Alpha]1];
+		If[TrueQ[\[Beta]1==0],
+			\[Lambda]12=-\[Lambda]12;
+			\[Alpha]10=Pi/2+0.001;
+		];
+		(*Print[{f,eprime2,\[Beta]1,\[Beta]2,\[Lambda]12}];*)
+		(*Print[Plot[Evaluate@{\[Lambda]12,\[Lambda]12org},{\[Alpha]1,-Pi,Pi}(*,PlotRange->{\[Lambda]12org*0.95,\[Lambda]12org*1.05}*)]];(* dubug *)*)
+		(*Print[\[Alpha]10];*)
+		\[Lambda]12=SetPrecision[\[Lambda]12,OptionValue[WorkingPrecision]];
+		\[Alpha]1=\[Alpha]1/.First[FindRoot[
 			\[Lambda]12==\[Lambda]12org
 			,{\[Alpha]1,\[Alpha]10},
 			Evaluate@FilterRules[{
+				(*StepMonitor:>Print[NumberForm[\[Alpha]1,16]],*)
 				opts},Options[FindRoot]
 			]
+		]];
+		If[Not@NumberQ[\[Alpha]1],Throw[{$Failed,$Failed,$Failed}]];
+		\[Alpha]0=ArcSin[Sin[\[Alpha]1]Cos[\[Beta]1]];
+		\[Sigma]1=ArcTan[Cos[\[Alpha]1]Cos[\[Beta]1],Sin[\[Beta]1]];
+		If[TrueQ[\[Beta]1==0],
+			(* modify when \[Beta]1 == 0 (equator and antipodal ) *)
+			\[Sigma]1=-\[Sigma]1;
+			\[Alpha]1=Pi-\[Alpha]1;
 		];
+		\[Sigma]2=ArcTan[Sqrt[Cos[\[Alpha]1]^2Cos[\[Beta]1]^2+(Cos[\[Beta]2]^2-Cos[\[Beta]1]^2)],Sin[\[Beta]2]];
+		\[Alpha]2=ArcTan[Cos[\[Alpha]0]Cos[\[Sigma]2],Sin[\[Alpha]0]];
+		k2=eprime2 Cos[\[Alpha]0]^2;
+		s1=b Re[EllipticE[\[Sigma]1,-k2]];
+		s2=b Re[EllipticE[\[Sigma]2,-k2]];
+		s12=s2-s1;
+		Throw[{s2-s1,\[Alpha]1,\[Alpha]2}];
 	];
-	\[Alpha]0=ArcSin[Sin[\[Alpha]1]Cos[\[Beta]1]];
-	\[Sigma]1=ArcTan[Cos[\[Alpha]1]Cos[\[Beta]1],Sin[\[Beta]1]];
-	\[Sigma]2=ArcTan[Sqrt[Cos[\[Alpha]1]^2Cos[\[Beta]1]^2+(Cos[\[Beta]2]^2-Cos[\[Beta]1]^2)],Sin[\[Beta]2]];
-	\[Alpha]2=ArcTan[Cos[\[Alpha]0]Cos[\[Sigma]2],Sin[\[Alpha]0]];
-	k2=eprime2 Cos[\[Alpha]0]^2;
-	s1=b Re[EllipticE[\[Sigma]1,-k2]];
-	s2=b Re[EllipticE[\[Sigma]2,-k2]];
-	s12=s2-s1;
 
 	If[swapped,{\[Alpha]1,\[Alpha]2}={Pi-\[Alpha]2,Pi-\[Alpha]1};];
 	If[inverselat,{\[Alpha]1,\[Alpha]2}={Pi-\[Alpha]1,Pi-\[Alpha]2};];
