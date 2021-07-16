@@ -3,7 +3,7 @@
 
  Although this package and [GeographicLib](http://geographiclib.sourceforge.net/) refer to the same paper by Charles F. F. Karney, they differ in the way to calculate. GeographicLib uses functional expansion to calculate elliptic integrals, but this package uses _Mathematica_ built-in functions such as `EllipticE`. Additionally, inverse function of elliptic integral is represented by `InverseFunction`, and `FindRoot` is used to solve the inverse problems numerically. This enables arbitrary precision calculation with _Mathematica_.
 
- At the moment, accuracy of distance calculation is 0.1 m order for `WorkingPrecision->$MachinePrecision` and 0.001m order for `WorkingPrecision->30`. This is much better than `GeoDistance[Method->"Vintency75"]`(10000m order), but less than GeographicLib(GeographicLib has 15nm accuracy).
+ Accuracy of distance calculation is 0.1 m order for `WorkingPrecision->$MachinePrecision` and 0.001m order for `WorkingPrecision->30`, because calculation accuracy of `FindRoot` is a half of `WorkingPrecision`. This is much better than `GeoDistance[Method->"Vintency75"]`(10000m order), but less than GeographicLib(GeographicLib has 15nm accuracy).
 
 # Installation
  To install the package, 
