@@ -9,6 +9,7 @@
  To install the package, 
 + download the zip file,
 + extract,
++ rename the directory to "Geodesic",
 + move "Geodesic" directory to the directory _Mathematica_ can find such as `$UserBaseDirectory` or another one of `$Path`.
 
 # Usage
